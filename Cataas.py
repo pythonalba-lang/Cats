@@ -15,23 +15,28 @@ def load_image(url):
         img = Image.open(image_data)
         # Изменяем размер изображения
         img.thumbnail((600, 480), Image.Resampling.LANCZOS)
-
         return ImageTk.PhotoImage(img)
     except Exception as e:
         print(f"Ошибка при загрузке изображения: {e}")
         return None
 
 
-def set_image():
+def open_new_window():
     # Вызываем функцию для загрузки изображения
     img = load_image(url)
+if img:
+    # Создаем новое вторичное окно
+    new_window = Toplevel()
+    new_window.title("Картинка с котиком")
+    new_window.geometry("600x480")
 
-    if img:
-        # Устанавливаем изображение в метку
-        label.config(image=img)
-        label.image = img # Сохраняем ссылку на изображение
+    # Добавляем изображение в новое окно
+    label = Label(new_window, image=img)
+    label.image = img  # Сохраняем ссылку на изображение
+    label.pack()
 
-def exit():
+
+def exit_app():
     window.destroy()
 
 
@@ -43,9 +48,6 @@ window.geometry("600x520")
 label = Label(window)
 label.pack()
 
-# update_button = Button(text="Обновить", command=set_image)
-# update_button.pack()
-
 # Создаем меню
 menu_bar = Menu(window)
 window.config(menu=menu_bar)
@@ -53,19 +55,11 @@ window.config(menu=menu_bar)
 # Добавляем пункты меню
 file_menu = Menu(menu_bar, tearoff=0)
 menu_bar.add_cascade(label="Файл", menu=file_menu)
-file_menu.add_command(label="Загрузить фото", command=set_image)
+file_menu.add_command(label="Загрузить фото", command=open_new_window)
 file_menu.add_separator()
 file_menu.add_command(label="Выход", command=exit)
 
-url = url = 'https://cataas.com/cat/cute'
+url = url = 'https://cataas.com/cat'
 
-
-if img:
-    # Устанавливаем изображение в метку
-    label.config(image=img)
-    # Необходимо сохранить ссылку на изображение, чтобы избежать сборки мусора
-    label.image = img
-
-set_image()
 
 window.mainloop()
