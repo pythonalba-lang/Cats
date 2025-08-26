@@ -40,18 +40,18 @@ def open_new_window():
         label.image = img # Сохраняем ссылку на изображение
         label.pack()
 
-
-def exit_app():
-    window.destroy()
-
-
+def open_random_cat():
+    img = load_image(url)
+    if img:
+        new_window = Toplevel()
+        new_window.title("Случайный котик")
+        new_window.geometry("600x480")
+        label = Label(new_window, image=img)
+        label.image = img
+        label.pack()
 window = Tk()
 window.title("Cats!")
 window.geometry("600x520")
-
-# Создаем метку без изображения
-label = Label(window)
-label.pack()
 
 # Создаем меню
 menu_bar = Menu(window)
@@ -64,7 +64,7 @@ file_menu.add_command(label="Загрузить фото", command=open_new_wind
 file_menu.add_separator()
 file_menu.add_command(label="Выход", command=exit)
 
-url = url = 'https://cataas.com/cat'
+url = 'https://cataas.com/cat'
 
 # Метка "Выбери тег"
 tag_label = Label(text="Выбери тег")
@@ -72,6 +72,10 @@ tag_label.pack()
 
 tag_combobox = ttk.Combobox(values=ALLOWED_TAGS)
 tag_combobox.pack()
+
+# Кнопка для загрузки изображения без тега
+random_cat_button = Button(text="Случайный котик", command=open_random_cat)
+random_cat_button.pack()
 
 # Кнопка для загрузки изображения с тегом
 load_button = Button(text="Загрузить по тегу", command=open_new_window)
