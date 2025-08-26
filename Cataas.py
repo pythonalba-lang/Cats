@@ -1,7 +1,13 @@
 from tkinter import *
+from tkinter import ttk
 from PIL import Image, ImageTk
 import requests
 from io import BytesIO
+
+# Список доступных тегов
+ALLOWED_TAGS = [
+    'sleep', 'jump', 'smile', 'fight', 'black', 'white', 'red', 'siamese', 'bengal'
+]
 
 def load_image(url):
     try:
@@ -22,18 +28,17 @@ def load_image(url):
 
 
 def open_new_window():
-    # Вызываем функцию для загрузки изображения
-    img = load_image(url)
-if img:
-    # Создаем новое вторичное окно
-    new_window = Toplevel()
-    new_window.title("Картинка с котиком")
-    new_window.geometry("600x480")
-
-    # Добавляем изображение в новое окно
-    label = Label(new_window, image=img)
-    label.image = img  # Сохраняем ссылку на изображение
-    label.pack()
+    tag = tag_combobox.get()
+    url_with_tag = f'https://cataas.com/cat/{tag}' if tag else 'https://cataas.com/cat'
+    img = load_image(url_with_tag)
+    if img:
+        # Создаем новое вторичное окно
+        new_window = Toplevel()
+        new_window.title("Cat Image")
+        new_window.geometry("600x480")
+        label = Label(new_window, image=img)# Добавляем изображение в новое окно
+        label.image = img # Сохраняем ссылку на изображение
+        label.pack()
 
 
 def exit_app():
@@ -61,5 +66,15 @@ file_menu.add_command(label="Выход", command=exit)
 
 url = url = 'https://cataas.com/cat'
 
+# Метка "Выбери тег"
+tag_label = Label(text="Выбери тег")
+tag_label.pack()
+
+tag_combobox = ttk.Combobox(values=ALLOWED_TAGS)
+tag_combobox.pack()
+
+# Кнопка для загрузки изображения с тегом
+load_button = Button(text="Загрузить по тегу", command=open_new_window)
+load_button.pack()
 
 window.mainloop()
